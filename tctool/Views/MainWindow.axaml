@@ -30,9 +30,9 @@
 				<ListBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedListItem}">
 					<ListBox.ItemTemplate>
 						<DataTemplate DataType="{x:Type vm:ListItemTemplate}">
-							<StackPanel Spacing="17" Orientation="Horizontal">
+							<StackPanel Spacing="9" Orientation="Horizontal">
 								<PathIcon Data="{Binding ListItemIcon}" Width="14"/>
-								<TextBlock Text="{Binding Label}"/>
+								<TextBlock Text="{Binding Label}" Margin="0 5 0 1"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>

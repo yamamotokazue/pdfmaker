@@ -44,7 +44,20 @@ namespace tctool.ViewModels
         public ListItemTemplate(Type type, string iconKey)
         {
             ModelType = type;
-            Label = type.Name.Replace("PageViewModel", "");
+
+            string chkLabel = type.Name.Replace("PageViewModel", "");
+            switch (chkLabel)
+            {
+                case "Home":
+                    Label = "首頁";
+                    break;
+                case "PdfRemaker":
+                    Label = "PDF拆併";
+                    break;
+                default:
+                    Label = chkLabel;
+                    break;
+            }
 
             Application.Current!.TryFindResource(iconKey, out var res);
             ListItemIcon = (StreamGeometry)res!;
