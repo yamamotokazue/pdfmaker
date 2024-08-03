@@ -2,7 +2,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:tctool.ViewModels;assembly=tctool"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="tctool.Views.PdfRemakerPageView">
-  pdf remaker
+             x:Class="tctool.Views.PdfRemakerPageView"
+			 x:DataType="vm:PdfRemakerPageViewModel">
+		<StackPanel Margin="20">
+			<TextBlock Margin="0 20" FontSize="20" FontWeight="Bold">
+				PDF拆併
+			</TextBlock>
+			<Button Content="選擇一個或多個PDF檔案" Command="{Binding TriggerFileSelectorCommand}" HorizontalAlignment="Stretch"/>
+			<DataGrid Margin="20" ItemsSource="{Binding FileLists}"
+          IsReadOnly="True"
+          CanUserReorderColumns="True"
+          CanUserResizeColumns="True"
+          CanUserSortColumns="False"
+          GridLinesVisibility="All"
+          BorderThickness="1" BorderBrush="Gray">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+					<DataGridTextColumn Header="Path" Binding="{Binding Path}" />
+				</DataGrid.Columns>
+			</DataGrid>
+
+		</StackPanel>
 </UserControl>
