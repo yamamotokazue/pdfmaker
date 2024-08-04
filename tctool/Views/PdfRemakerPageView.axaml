@@ -6,23 +6,121 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="tctool.Views.PdfRemakerPageView"
 			 x:DataType="vm:PdfRemakerPageViewModel">
+	<ScrollViewer>
 		<StackPanel Margin="20">
 			<TextBlock Margin="0 20" FontSize="20" FontWeight="Bold">
 				PDF拆併
 			</TextBlock>
-			<Button Content="選擇一個或多個PDF檔案" Command="{Binding TriggerFileSelectorCommand}" HorizontalAlignment="Stretch"/>
-			<DataGrid Margin="20" ItemsSource="{Binding FileLists}"
-          IsReadOnly="True"
-          CanUserReorderColumns="True"
-          CanUserResizeColumns="True"
-          CanUserSortColumns="False"
-          GridLinesVisibility="All"
-          BorderThickness="1" BorderBrush="Gray">
+			
+			<TextBlock Text="{Binding Msg}" Foreground="Red" HorizontalAlignment="Center"/>
+			
+			<Button Content="Step.1 選擇一個或多個PDF檔案" 
+					HorizontalContentAlignment="Center"
+					HorizontalAlignment="Stretch"
+					Command="{Binding TriggerFileSelectorCommand}"
+					IsEnabled="{Binding FileSelector}"/>
+			
+			<DataGrid Margin="20" ItemsSource="{Binding FileLists}" IsReadOnly="{Binding !FileSelector}"
+				  CanUserReorderColumns="True"
+				  CanUserResizeColumns="True"
+				  GridLinesVisibility="All"
+				  BorderThickness="1" BorderBrush="Gray">
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-					<DataGridTextColumn Header="Path" Binding="{Binding Path}" />
+					<DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+					
+					<DataGridTextColumn Header="Path" Binding="{Binding Path}" IsReadOnly="True"/>
+
+					<DataGridTemplateColumn Header="Seq">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="vm:fileInfo">
+								<TextBlock Text="{Binding Seq}"
+								  VerticalAlignment="Center" HorizontalAlignment="Center" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+						<DataGridTemplateColumn.CellEditingTemplate>
+							<DataTemplate DataType="vm:fileInfo">
+								<NumericUpDown Value="{Binding Seq}"
+								   FormatString="N0" Minimum="1" Maximum="10"
+								   HorizontalAlignment="Stretch"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellEditingTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+			
+			<Button Content="Step.2 鎖定並解析PDF" 
+					HorizontalContentAlignment="Center" 
+					HorizontalAlignment="Stretch"
+					Command="{Binding TriggerPDFAnalyseCommand}" 
+					IsEnabled="{Binding FileSelector}"/>
+			
+			<DataGrid Margin="20" ItemsSource="{Binding PdfPageLists}"
+				  CanUserReorderColumns="True"
+				  CanUserResizeColumns="True"
+				  GridLinesVisibility="All"
+				  BorderThickness="1" BorderBrush="Gray">
+				<DataGrid.Columns>
+					<DataGridTemplateColumn Header="Seq" IsReadOnly="True">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="vm:pdfPageInfo">
+								<TextBlock Text="{Binding Seq}"
+								  VerticalAlignment="Center" HorizontalAlignment="Center" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTemplateColumn Header="Page" IsReadOnly="True">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="vm:pdfPageInfo">
+								<TextBlock Text="{Binding Page}"
+								  VerticalAlignment="Center" HorizontalAlignment="Center" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					
+					<DataGridCheckBoxColumn Header="Retain" Binding="{Binding Retain}">
+					</DataGridCheckBoxColumn>
+
+					<DataGridTemplateColumn Header="Rotate">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="vm:pdfPageInfo">
+								<TextBlock Text="{Binding Rotate}"
+								  VerticalAlignment="Center" HorizontalAlignment="Center" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+						<DataGridTemplateColumn.CellEditingTemplate>
+							<DataTemplate DataType="vm:pdfPageInfo">
+								<NumericUpDown Value="{Binding Rotate}"
+								   FormatString="N0" Minimum="0" Maximum="359"
+								   HorizontalAlignment="Stretch"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellEditingTemplate>
+					</DataGridTemplateColumn>
+					
+					<DataGridTemplateColumn  Header="NewPage">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="vm:pdfPageInfo">
+								<TextBlock Text="{Binding NewPage}"
+								  VerticalAlignment="Center" HorizontalAlignment="Center" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+						<DataGridTemplateColumn.CellEditingTemplate>
+							<DataTemplate DataType="vm:pdfPageInfo">
+								<NumericUpDown Value="{Binding NewPage}"
+								   FormatString="N0" Minimum="1" Maximum="999"
+								   HorizontalAlignment="Stretch"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellEditingTemplate>
+					</DataGridTemplateColumn >
 				</DataGrid.Columns>
 			</DataGrid>
 
+			<Button Content="Step.3 建立新PDF檔案"
+					HorizontalContentAlignment="Center"
+					HorizontalAlignment="Stretch"
+					Command="{Binding TriggerPDFMakeCommand}"
+					IsEnabled="{Binding PDFAnalyse}"/>
+			
 		</StackPanel>
+	</ScrollViewer>
 </UserControl>
